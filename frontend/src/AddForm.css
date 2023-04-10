@@ -1,0 +1,13 @@
+form {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 0 1.5rem 0;
+    gap: 0.7rem;
+}
+.form-container {
+    background-color: #bdbdbd;
+    color: whitesmoke;
+    border-radius: 3px;
+    padding: 0.8rem;
+    margin-bottom: 2rem;
+}
