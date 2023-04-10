@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
-import {Book} from "./BookModel";
+import {Book} from "../models/BookModel";
 import axios from "axios";
+import {toast} from "react-toastify";
 
 export default function useBooks() {
     const [books, setBooks] = useState<Book[]>([]);
@@ -22,7 +23,7 @@ export default function useBooks() {
         axios.post("api/books", book)
             .then(response => response.data)
             .then(data => setBooks(books => [data, ...books]))
-            .catch(reason => console.error(reason))
+            .catch((error) => toast.error("Unknown error, try again later" + error))
     }
 
     function deleteBook(isbn: string) {
@@ -31,7 +32,7 @@ export default function useBooks() {
                 setBooks(books => {
                     return books.filter(book => isbn !== book.isbn)
                 }))
-            .catch(reason => console.error(reason))
+            .catch((reason) => toast.error(reason))
     }
 
     return {books, setBooks, loadBooks, addBook, deleteBook}

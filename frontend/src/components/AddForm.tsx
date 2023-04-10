@@ -1,8 +1,20 @@
-import {Button, InputLabel, MenuItem, Select, SelectChangeEvent, TextField, Typography} from "@mui/material";
-import "./AddForm.css"
+import {
+    Box,
+    Button,
+    Container,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
+    TextField,
+    Typography
+} from "@mui/material";
+import "./AddForm.css";
 import {ChangeEvent, FormEvent, ReactNode, useState} from "react";
-import {Book} from "./BookModel";
-import axios from "axios";
+import {Book} from "../models/BookModel";
+import AddIcon from '@mui/icons-material/Add';
+import {toast} from "react-toastify";
+
 
 type FormProps = {
     addBook: (book: Book) => void
@@ -14,7 +26,8 @@ export default function AddForm(props: FormProps) {
         isbn: "",
         cover: "EBOOK"
     }
-    const [book, setBook] = useState<Book>(initialState)
+    const [book, setBook] = useState<Book>(initialState);
+    const [showForm, setShowForm] = useState(false);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const targetName = event.target.name;
@@ -35,12 +48,17 @@ export default function AddForm(props: FormProps) {
         event.preventDefault();
         props.addBook(book)
         setBook(initialState)
+        toast("Book successfully added")
     }
     return (
-        <section className="form-container">
+        <Container maxWidth="lg">
+            <Button type="button" onClick={()=> setShowForm(!showForm)}>{showForm ? "CLOSE" :<AddIcon/>}</Button>
+            {showForm &&
+            <Box sx={{bgcolor: '#efebe9', p: "1rem", pb: "2rem", mb: "2rem"}}>
             <Typography sx={{fontSize: "1.5rem", padding: "0.5rem"}} variant="h2" component="h2">
                 Add a Book
             </Typography>
+
             <form onSubmit={handleSubmit}>
                 <TextField required label="Title" variant="outlined" name="title" value={book.title}
                            onChange={handleChange}/>
@@ -62,6 +80,7 @@ export default function AddForm(props: FormProps) {
                 </Select>
                 <Button sx={{width: "100px", alignSelf: "center"}} variant="contained" type="submit">Add</Button>
             </form>
-        </section>
+            </Box>}
+        </Container>
     )
 }
